@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "graph-rag-system"
+version = "0.1.0"
+description = "Graph-based RAG pipeline using Langchain and Langgraph"
+authors = ["Nimish Kumar"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "^0.3.7"
+langgraph = "^0.2.45"
+pymongo = "^4.10.1"
+chromadb = "^0.5.18"
+requests = "^2.32.3"
+numpy = "^1.24"
+pandas = "^2.2.3"
+matplotlib = "^3.9.2"
+scikit-learn = "^1.5.2"
+langchain-community = "^0.3.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
