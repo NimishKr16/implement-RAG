@@ -20,6 +20,13 @@ scikit-learn = "^1.5.2"
 langchain-community = "^0.3.5"
 python-nmap = "^0.7.1"
 beautifulsoup4 = "^4.12.3"
+pytesseract = "^0.3.13"
+lxml = "^5.3.0"
+networkx = "^3.4.2"
+opencv-python = "^4.10.0.84"
+scikit-image = "^0.24.0"
+python-dotenv = "^1.0.1"
+pathlib = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
