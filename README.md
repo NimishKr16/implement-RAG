@@ -366,7 +366,7 @@ similarities = {
 sns.heatmap(list(similarities.values()), annot=True, cmap="Blues", fmt=".2f")
 plt.title("Cosine Similarity Scores between Query and Graph Nodes")
 plt.show()
-
+```
 
 ```mermaid
 graph TD
@@ -378,3 +378,4 @@ graph TD
     E --> A
     B --> A
     C --> A
+```
