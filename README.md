@@ -366,3 +366,15 @@ similarities = {
 sns.heatmap(list(similarities.values()), annot=True, cmap="Blues", fmt=".2f")
 plt.title("Cosine Similarity Scores between Query and Graph Nodes")
 plt.show()
+
+
+```mermaid
+graph TD
+    A[Flask API] --> B[MongoDB]
+    A --> C[Chroma DB]
+    A --> D[User Requests]
+    D --> A
+    D --> E[Docker Container]
+    E --> A
+    B --> A
+    C --> A
