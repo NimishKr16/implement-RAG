@@ -3,18 +3,25 @@ import networkx as nx
 from pymongo import MongoClient
 import chromadb
 import json
-
+from dotenv import load_dotenv
+import os
+from pymongo.server_api import ServerApi
+from pathlib import Path
 # Initialize Flask app
 app = Flask(__name__)
 
 # Set up MongoDB connection
-mongo_client = MongoClient("mongodb://localhost:27017/")
-db = mongo_client["network_graph_db"]
-graphs_collection = db["graphs"]
+env_path = Path('.env')
+load_dotenv()
+uri = os.getenv("MONGO_URI")
 
+
+client = MongoClient(uri, server_api=ServerApi('1'))
+db = client["pinewheel"]
+graphs_collection = db["network_scans"] 
 # Set up Chroma DB connection
 client = chromadb.Client()
-collection_chroma = client.get_or_create_collection("network_graph_collection")
+collection_chroma = client.get_or_create_collection("scan_graph")
 
 # Create a graph object (use NetworkX or any other method to create your graph)
 def create_or_update_graph(graph_id, data):
