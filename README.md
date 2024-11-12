@@ -313,6 +313,48 @@ Here’s a benchmark summary of the queries processed:
 - **Average Inference Time**: ~0.002 seconds per query.
 - The system performs efficiently for real-time querying, making it suitable for live penetration testing and vulnerability assessment tools.
 
+## System Architecture Diagram
+```mermaid
+graph TD
+    A[Flask API] --> B[MongoDB]
+    A --> C[Chroma DB]
+    A --> D[User Requests]
+    D --> A
+    D --> E[Docker Container]
+    E --> A
+    B --> A
+    C --> A
+```
+
+
+## Sequence Diagram
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Flask API
+    participant M as MongoDB
+    participant C as Chroma DB
+    
+    U->>A: Sends API request with graph_id and data
+    A->>M: Check if graph_id exists
+    M-->>A: Return existing graph data (or null if not found)
+    A->>C: Generate/Update embeddings for new graph data
+    C-->>A: Return embeddings
+    A->>M: Store/Update graph data in MongoDB
+    A-->>U: Return success response
+```
+
+## Data Flow Diagram
+```mermaid
+graph TD
+    U[User Query] --> A[Flask API]
+    A --> M[MongoDB]
+    A --> C[Chroma DB]
+    M --> A
+    C --> A
+    A --> U[API Response]
+```
+
 ## Detailed Explanation of Approach
 
 ### 1. **Graph-Based Knowledge Representation**
@@ -368,14 +410,3 @@ plt.title("Cosine Similarity Scores between Query and Graph Nodes")
 plt.show()
 ```
 
-```mermaid
-graph TD
-    A[Flask API] --> B[MongoDB]
-    A --> C[Chroma DB]
-    A --> D[User Requests]
-    D --> A
-    D --> E[Docker Container]
-    E --> A
-    B --> A
-    C --> A
-```
