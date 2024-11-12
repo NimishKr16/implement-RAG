@@ -22,8 +22,8 @@ RUN poetry install --no-interaction --no-ansi
 # Step 8: Copy the rest of the project files
 COPY . /app/
 
-# Step 9: Expose port 5000 (default for Flask)
-EXPOSE 5000
+# Step 9: Expose port 5500 (custom set for Flask)
+EXPOSE 5500
 
 # Step 10: Run the Flask application using Poetry
 CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
