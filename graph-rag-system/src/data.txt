@@ -1,0 +1,171 @@
+> nmap $target -p- -T4 -Pn --open --reason
+Nmap scan report for 10.10.11.248
+Host is up, received user-set (0.057s latency).
+Not shown: 63049 closed tcp ports (conn-refused), 2481 filtered tcp ports (no-response)
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+PORT     STATE SERVICE REASON
+22/tcp   open  ssh     syn-ack
+80/tcp   open  http    syn-ack
+389/tcp  open  ldap    syn-ack
+443/tcp  open  https   syn-ack
+5667/tcp open  unknown syn-ack
+ 
+Nmap done: 1 IP address (1 host up) scanned in 33.02 seconds
+
+> ffuf -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -t 100 -fc 404 -e .php,.html,.txt -u https://nagios.monitored.htb/nagiosxi/FUZZ
+ 
+        /'___\  /'___\           /'___\      
+       /\ \__/ /\ \__/  __  __  /\ \__/      
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\     
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\      
+          \/_/    \/_/   \/___/    \/_/      
+ 
+       v2.1.0-dev
+________________________________________________
+ 
+ :: Method           : GET
+ :: URL              : https://nagios.monitored.htb/nagiosxi/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt
+ :: Extensions       : .php .html .txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 100
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+ :: Filter           : Response status: 404
+________________________________________________
+ 
+images                  [Status: 301, Size: 340, Words: 20, Lines: 10, Duration: 48ms]
+index.php               [Status: 302, Size: 27, Words: 5, Lines: 1, Duration: 81ms]
+about                   [Status: 301, Size: 339, Words: 20, Lines: 10, Duration: 46ms]
+login.php               [Status: 200, Size: 26575, Words: 5452, Lines: 467, Duration: 96ms]
+help                    [Status: 301, Size: 338, Words: 20, Lines: 10, Duration: 45ms]
+tools                   [Status: 301, Size: 339, Words: 20, Lines: 10, Duration: 44ms]
+mobile                  [Status: 301, Size: 340, Words: 20, Lines: 10, Duration: 43ms]
+admin                   [Status: 301, Size: 339, Words: 20, Lines: 10, Duration: 43ms]
+reports                 [Status: 301, Size: 341, Words: 20, Lines: 10, Duration: 43ms]
+account                 [Status: 301, Size: 341, Words: 20, Lines: 10, Duration: 52ms]
+includes                [Status: 301, Size: 342, Words: 20, Lines: 10, Duration: 45ms]
+install.php             [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 82ms]
+backend                 [Status: 301, Size: 341, Words: 20, Lines: 10, Duration: 45ms]
+db                      [Status: 301, Size: 336, Words: 20, Lines: 10, Duration: 51ms]
+api                     [Status: 301, Size: 337, Words: 20, Lines: 10, Duration: 90ms]
+upgrade.php             [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 99ms]
+config                  [Status: 301, Size: 340, Words: 20, Lines: 10, Duration: 57ms]
+suggest.php             [Status: 200, Size: 27, Words: 5, Lines: 1, Duration: 100ms]
+views                   [Status: 301, Size: 339, Words: 20, Lines: 10, Duration: 51ms]
+sounds                  [Status: 403, Size: 286, Words: 20, Lines: 10, Duration: 45ms]
+rr.php                  [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 154ms]
+terminal                [Status: 200, Size: 5215, Words: 1247, Lines: 124, Duration: 159ms]
+.php                    [Status: 403, Size: 286, Words: 20, Lines: 10, Duration: 45ms]
+.html                   [Status: 403, Size: 286, Words: 20, Lines: 10, Duration: 47ms]
+ 
+:: Progress: [350600/350600] :: Job [1/1] :: 1196 req/sec :: Duration: [0:15:18] :: Errors: 1099::
+
+> nmap $target -p389 -script discovery
+Pre-scan script results:
+|_hostmap-robtex: *TEMPORARILY DISABLED* due to changes in Robtex's API. See https://www.robtex.com/api/
+|_http-robtex-shared-ns: *TEMPORARILY DISABLED* due to changes in Robtex's API. See https://www.robtex.com/api/
+| targets-asn:
+|_  targets-asn.asn is a mandatory parameter
+Nmap scan report for monitored.htb (10.10.11.248)
+Host is up (0.043s latency).
+ 
+PORT    STATE SERVICE
+389/tcp open  ldap
+| ldap-search:
+|   Context: dc=monitored,dc=htb
+|     dn: dc=monitored,dc=htb
+|         objectClass: top
+|         objectClass: dcObject
+|         objectClass: organization
+|         o: monitored.htb
+|_        dc: monitored
+| ldap-rootdse:
+| LDAP Results
+|   <ROOT>
+|       namingContexts: dc=monitored,dc=htb
+|       supportedControl: 2.16.840.1.113730.3.4.18
+|       supportedControl: 2.16.840.1.113730.3.4.2
+|       supportedControl: 1.3.6.1.4.1.4203.1.10.1
+|       supportedControl: 1.3.6.1.1.22
+|       supportedControl: 1.2.840.113556.1.4.319
+|       supportedControl: 1.2.826.0.1.3344810.2.3
+|       supportedControl: 1.3.6.1.1.13.2
+|       supportedControl: 1.3.6.1.1.13.1
+|       supportedControl: 1.3.6.1.1.12
+|       supportedExtension: 1.3.6.1.4.1.4203.1.11.1
+|       supportedExtension: 1.3.6.1.4.1.4203.1.11.3
+|       supportedExtension: 1.3.6.1.1.8
+|       supportedLDAPVersion: 3
+|       supportedSASLMechanisms: DIGEST-MD5
+|       supportedSASLMechanisms: NTLM
+|       supportedSASLMechanisms: CRAM-MD5
+|_      subschemaSubentry: cn=Subschema
+ 
+Host script results:
+|_fcrdns: FAIL (No PTR record)
+| dns-brute:
+|_  DNS Brute-force hostnames: No results.
+ 
+Nmap done: 1 IP address (1 host up) scanned in 16.82 seconds
+
+> snmpwalk -c public -v1 -t 10 $target
+iso.3.6.1.2.1.1.1.0 = STRING: "Linux monitored 5.10.0-27-amd64 #1 SMP Debian 5.10.205-2 (2023-12-31) x86_64"
+iso.3.6.1.2.1.1.2.0 = OID: iso.3.6.1.4.1.8072.3.2.10
+iso.3.6.1.2.1.1.3.0 = Timeticks: (1036224) 2:52:42.24
+iso.3.6.1.2.1.1.4.0 = STRING: "Me <root@monitored.htb>"
+iso.3.6.1.2.1.1.5.0 = STRING: "monitored"
+iso.3.6.1.2.1.1.6.0 = STRING: "Sitting on the Dock of the Bay"
+iso.3.6.1.2.1.1.7.0 = INTEGER: 72
+iso.3.6.1.2.1.1.8.0 = Timeticks: (1550) 0:00:15.50
+…
+iso.3.6.1.2.1.1.9.1.3.1 = STRING: "The SNMP Management Architecture MIB."
+iso.3.6.1.2.1.1.9.1.3.2 = STRING: "The MIB for Message Processing and Dispatching."
+iso.3.6.1.2.1.1.9.1.3.3 = STRING: "The management information definitions for the SNMP User-based Security Model."
+iso.3.6.1.2.1.1.9.1.3.4 = STRING: "The MIB module for SNMPv2 entities"
+iso.3.6.1.2.1.1.9.1.3.5 = STRING: "View-based Access Control Model for SNMP."
+iso.3.6.1.2.1.1.9.1.3.6 = STRING: "The MIB module for managing TCP implementations"
+iso.3.6.1.2.1.1.9.1.3.7 = STRING: "The MIB module for managing UDP implementations"
+iso.3.6.1.2.1.1.9.1.3.8 = STRING: "The MIB module for managing IP and ICMP implementations"
+iso.3.6.1.2.1.1.9.1.3.9 = STRING: "The MIB modules for managing SNMP Notification, plus filtering."
+iso.3.6.1.2.1.1.9.1.3.10 = STRING: "The MIB module for logging SNMP Notifications."
+iso.3.6.1.2.1.1.9.1.3.11 = STRING: "The MIB module for logging SNMP Notifications."
+iso.3.6.1.2.1.25.1.4.0 = STRING: "BOOT_IMAGE=/boot/vmlinuz-5.10.0-27-amd64 root=UUID=d8761c35-f10f-4e79-b24c-38a65ad7ce1b ro net.ifnames=0 biosdevname=0 quiet"
+…
+iso.3.6.1.2.1.25.4.2.1.5.492 = STRING: "--config /etc/laurel/config.toml"
+iso.3.6.1.2.1.25.4.2.1.5.522 = ""
+iso.3.6.1.2.1.25.4.2.1.5.569 = STRING: "-d -q -s"
+iso.3.6.1.2.1.25.4.2.1.5.571 = STRING: "-f"
+iso.3.6.1.2.1.25.4.2.1.5.572 = STRING: "--system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only"
+iso.3.6.1.2.1.25.4.2.1.5.575 = STRING: "-n -iNONE"
+iso.3.6.1.2.1.25.4.2.1.5.577 = ""
+iso.3.6.1.2.1.25.4.2.1.5.578 = STRING: "-u -s -O /run/wpa_supplicant"
+iso.3.6.1.2.1.25.4.2.1.5.588 = STRING: "-f"
+iso.3.6.1.2.1.25.4.2.1.5.609 = STRING: "-c sleep 30; sudo -u svc /bin/bash -c /opt/scripts/check_host.sh svc XjH7VCehowpR1xZB "
+iso.3.6.1.2.1.25.4.2.1.5.621 = STRING: "-4 -v -i -pf /run/dhclient.eth0.pid -lf /var/lib/dhcp/dhclient.eth0.leases -I -df /var/lib/dhcp/dhclient6.eth0.leases eth0"
+iso.3.6.1.2.1.25.4.2.1.5.686 = ""
+iso.3.6.1.2.1.25.4.2.1.5.687 = ""
+iso.3.6.1.2.1.25.4.2.1.5.731 = STRING: "-f /usr/local/nagios/etc/pnp/npcd.cfg"
+iso.3.6.1.2.1.25.4.2.1.5.737 = STRING: "-LOw -f -p /run/snmptrapd.pid"
+iso.3.6.1.2.1.25.4.2.1.5.750 = STRING: "-LOw -u Debian-snmp -g Debian-snmp -I -smux mteTrigger mteTriggerConf -f -p /run/snmpd.pid"
+iso.3.6.1.2.1.25.4.2.1.5.759 = STRING: "-o -p -- \\u --noclear tty1 linux"
+iso.3.6.1.2.1.25.4.2.1.5.770 = STRING: "-p /var/run/ntpd.pid -g -u 108:116"
+iso.3.6.1.2.1.25.4.2.1.5.780 = ""
+iso.3.6.1.2.1.25.4.2.1.5.816 = STRING: "-q --background=/var/run/shellinaboxd.pid -c /var/lib/shellinabox -p 7878 -u shellinabox -g shellinabox --user-css Black on Whit"
+iso.3.6.1.2.1.25.4.2.1.5.818 = STRING: "-h ldap:/// ldapi:/// -g openldap -u openldap -F /etc/ldap/slapd.d"
+iso.3.6.1.2.1.25.4.2.1.5.819 = STRING: "-q --background=/var/run/shellinaboxd.pid -c /var/lib/shellinabox -p 7878 -u shellinabox -g shellinabox --user-css Black on Whit"
+iso.3.6.1.2.1.25.4.2.1.5.826 = STRING: "-k start"
+iso.3.6.1.2.1.25.4.2.1.5.834 = STRING: "-D /var/lib/postgresql/13/main -c config_file=/etc/postgresql/13/main/postgresql.conf"
+iso.3.6.1.2.1.25.4.2.1.5.1535 = STRING: "-u svc /bin/bash -c /opt/scripts/check_host.sh svc XjH7VCehowpR1xZB"
+iso.3.6.1.2.1.25.4.2.1.5.1536 = STRING: "-c /opt/scripts/check_host.sh svc XjH7VCehowpR1xZB"
+iso.3.6.1.2.1.25.4.2.1.5.1562 = STRING: "-bd -q30m"
+iso.3.6.1.2.1.25.4.2.1.5.1976 = STRING: "-k start"
+iso.3.6.1.2.1.25.4.2.1.5.2081 = STRING: "-k start"
+iso.3.6.1.2.1.25.4.2.1.5.2115 = STRING: "-d /usr/local/nagios/etc/nagios.cfg"
+iso.3.6.1.2.1.25.4.2.1.5.2118 = STRING: "--worker /usr/local/nagios/var/rw/nagios.qh"
+iso.3.6.1.2.1.25.4.2.1.5.2119 = STRING: "--worker /usr/local/nagios/var/rw/nagios.qh"
+iso.3.6.1.2.1.25.4.2.1.5.2120 = STRING: "--worker /usr/local/nagios/var/rw/nagios.qh"
+iso.3.6.1.2.1.25.4.2.1.5.2121 = STRING: "--worker /usr/local/nagios/var/rw/nagios.qh"
+iso.3.6.1.2.1.25.4.2.1.5.2255 = STRING: "-d /usr/local/nagios/etc/nagios.cfg"

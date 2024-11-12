@@ -1,0 +1,121 @@
+{
+    "nmap_scan_1": {
+      "command": "nmap $target -p- -T4 -Pn --open --reason",
+      "host": "10.10.11.248",
+      "status": "up",
+      "latency": "0.057s",
+      "closed_ports": 63049,
+      "filtered_ports": 2481,
+      "ports": [
+        {"port": 22, "protocol": "tcp", "state": "open", "service": "ssh", "reason": "syn-ack"},
+        {"port": 80, "protocol": "tcp", "state": "open", "service": "http", "reason": "syn-ack"},
+        {"port": 389, "protocol": "tcp", "state": "open", "service": "ldap", "reason": "syn-ack"},
+        {"port": 443, "protocol": "tcp", "state": "open", "service": "https", "reason": "syn-ack"},
+        {"port": 5667, "protocol": "tcp", "state": "open", "service": "unknown", "reason": "syn-ack"}
+      ],
+      "scan_duration": "33.02s"
+    },
+    "ffuf_scan": {
+      "command": "ffuf -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -t 100 -fc 404 -e .php,.html,.txt -u https://nagios.monitored.htb/nagiosxi/FUZZ",
+      "method": "GET",
+      "url": "https://nagios.monitored.htb/nagiosxi/FUZZ",
+      "extensions": [".php", ".html", ".txt"],
+      "status_filter": "404",
+      "threads": 100,
+      "results": [
+        {"url": "images", "status": 301, "size": 340, "duration": "48ms"},
+        {"url": "index.php", "status": 302, "size": 27, "duration": "81ms"},
+        {"url": "about", "status": 301, "size": 339, "duration": "46ms"},
+        {"url": "login.php", "status": 200, "size": 26575, "duration": "96ms"},
+        {"url": "help", "status": 301, "size": 338, "duration": "45ms"},
+        {"url": "tools", "status": 301, "size": 339, "duration": "44ms"},
+        {"url": "mobile", "status": 301, "size": 340, "duration": "43ms"},
+        {"url": "admin", "status": 301, "size": 339, "duration": "43ms"},
+        {"url": "reports", "status": 301, "size": 341, "duration": "43ms"},
+        {"url": "account", "status": 301, "size": 341, "duration": "52ms"},
+        {"url": "includes", "status": 301, "size": 342, "duration": "45ms"},
+        {"url": "install.php", "status": 302, "size": 0, "duration": "82ms"},
+        {"url": "backend", "status": 301, "size": 341, "duration": "45ms"},
+        {"url": "db", "status": 301, "size": 336, "duration": "51ms"},
+        {"url": "api", "status": 301, "size": 337, "duration": "90ms"},
+        {"url": "upgrade.php", "status": 302, "size": 0, "duration": "99ms"},
+        {"url": "config", "status": 301, "size": 340, "duration": "57ms"},
+        {"url": "suggest.php", "status": 200, "size": 27, "duration": "100ms"},
+        {"url": "views", "status": 301, "size": 339, "duration": "51ms"},
+        {"url": "sounds", "status": 403, "size": 286, "duration": "45ms"},
+        {"url": "rr.php", "status": 302, "size": 0, "duration": "154ms"},
+        {"url": "terminal", "status": 200, "size": 5215, "duration": "159ms"},
+        {"url": ".php", "status": 403, "size": 286, "duration": "45ms"},
+        {"url": ".html", "status": 403, "size": 286, "duration": "47ms"}
+      ],
+      "progress": "350600/350600",
+      "errors": 1099,
+      "duration": "15:18"
+    },
+    "nmap_scan_2": {
+      "command": "nmap $target -p389 -script discovery",
+      "host": "monitored.htb",
+      "status": "up",
+      "latency": "0.043s",
+      "ports": [
+        {
+          "port": 389,
+          "protocol": "tcp",
+          "state": "open",
+          "service": "ldap",
+          "scripts": {
+            "ldap_search": {
+              "context": "dc=monitored,dc=htb",
+              "dn": "dc=monitored,dc=htb",
+              "object_classes": [
+                "top",
+                "dcObject",
+                "organization"
+              ],
+              "organization": "monitored.htb",
+              "dc": "monitored"
+            },
+            "ldap_rootdse": {
+              "naming_contexts": "dc=monitored,dc=htb",
+              "supported_controls": [
+                "2.16.840.1.113730.3.4.18",
+                "2.16.840.1.113730.3.4.2",
+                "1.3.6.1.4.1.4203.1.10.1",
+                "1.3.6.1.1.22",
+                "1.2.840.113556.1.4.319",
+                "1.2.826.0.1.3344810.2.3",
+                "1.3.6.1.1.13.2",
+                "1.3.6.1.1.13.1",
+                "1.3.6.1.1.12"
+              ],
+              "supported_extensions": [
+                "1.3.6.1.4.1.4203.1.11.1",
+                "1.3.6.1.4.1.4203.1.11.3",
+                "1.3.6.1.1.8"
+              ],
+              "supported_ldap_version": 3,
+              "supported_sasl_mechanisms": [
+                "DIGEST-MD5",
+                "NTLM",
+                "CRAM-MD5"
+              ]
+            }
+          }
+        }
+      ],
+      "scan_duration": "16.82s"
+    },
+    "snmpwalk_scan": {
+      "command": "snmpwalk -c public -v1 -t 10 $target",
+      "snmp_data": [
+        {"oid": "iso.3.6.1.2.1.1.1.0", "value": "Linux monitored 5.10.0-27-amd64 #1 SMP Debian 5.10.205-2 (2023-12-31) x86_64"},
+        {"oid": "iso.3.6.1.2.1.1.2.0", "value": "iso.3.6.1.4.1.8072.3.2.10"},
+        {"oid": "iso.3.6.1.2.1.1.3.0", "value": "Timeticks: (1036224) 2:52:42.24"},
+        {"oid": "iso.3.6.1.2.1.1.4.0", "value": "Me <root@monitored.htb>"},
+        {"oid": "iso.3.6.1.2.1.1.5.0", "value": "monitored"},
+        {"oid": "iso.3.6.1.2.1.1.6.0", "value": "Sitting on the Dock of the Bay"},
+        {"oid": "iso.3.6.1.2.1.1.7.0", "value": 72},
+        {"oid": "iso.3.6.1.2.1.1.8.0", "value": "Timeticks: (1550) 0:00:15.50"}
+      ]
+    }
+  }
